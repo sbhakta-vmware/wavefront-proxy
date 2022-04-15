@@ -61,7 +61,7 @@ public class ProxyCheckInSchedulerTest {
     replay(proxyConfig);
     UUID proxyId = ProxyUtil.getOrCreateProxyId(proxyConfig);
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andReturn(returnConfig).once();
     expect(apiContainer.getProxyV2APIForTenant(APIContainer.CENTRAL_TENANT_NAME)).andReturn(proxyV2API).anyTimes();
     replay(proxyV2API, apiContainer);
@@ -95,7 +95,7 @@ public class ProxyCheckInSchedulerTest {
     replay(proxyConfig);
     UUID proxyId = ProxyUtil.getOrCreateProxyId(proxyConfig);
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andReturn(returnConfig).anyTimes();
     expect(apiContainer.getProxyV2APIForTenant(APIContainer.CENTRAL_TENANT_NAME)).andReturn(proxyV2API).anyTimes();
     replay(proxyV2API, apiContainer);
@@ -128,7 +128,7 @@ public class ProxyCheckInSchedulerTest {
     replay(proxyConfig);
     UUID proxyId = ProxyUtil.getOrCreateProxyId(proxyConfig);
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andReturn(returnConfig).anyTimes();
     expect(apiContainer.getProxyV2APIForTenant(APIContainer.CENTRAL_TENANT_NAME)).andReturn(proxyV2API).anyTimes();
     replay(proxyV2API, apiContainer);
@@ -165,19 +165,19 @@ public class ProxyCheckInSchedulerTest {
     UUID proxyId = ProxyUtil.getOrCreateProxyId(proxyConfig);
     expect(apiContainer.getProxyV2APIForTenant(APIContainer.CENTRAL_TENANT_NAME)).andReturn(proxyV2API).anyTimes();
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andThrow(new ProcessingException(new UnknownHostException())).once();
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andThrow(new ProcessingException(new SocketTimeoutException())).once();
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andThrow(new ProcessingException(new ConnectException())).once();
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andThrow(new ProcessingException(new NullPointerException())).once();
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andThrow(new NullPointerException()).once();
 
     replay(proxyV2API, apiContainer);
@@ -212,28 +212,28 @@ public class ProxyCheckInSchedulerTest {
     expect(apiContainer.getProxyV2APIForTenant(APIContainer.CENTRAL_TENANT_NAME)).andReturn(proxyV2API).anyTimes();
     // we need to allow 1 successful checking to prevent early termination
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andReturn(returnConfig).once();
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andThrow(new ClientErrorException(Response.status(401).build())).once();
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andThrow(new ClientErrorException(Response.status(403).build())).once();
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andThrow(new ClientErrorException(Response.status(407).build())).once();
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andThrow(new ClientErrorException(Response.status(408).build())).once();
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andThrow(new ClientErrorException(Response.status(429).build())).once();
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andThrow(new ServerErrorException(Response.status(500).build())).once();
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andThrow(new ServerErrorException(Response.status(502).build())).once();
 
     replay(proxyV2API, apiContainer);
@@ -277,13 +277,13 @@ public class ProxyCheckInSchedulerTest {
     replay(proxyConfig);
     UUID proxyId = ProxyUtil.getOrCreateProxyId(proxyConfig);
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andThrow(new ClientErrorException(Response.status(404).build())).once();
     expect(apiContainer.getProxyV2APIForTenant(APIContainer.CENTRAL_TENANT_NAME)).andReturn(proxyV2API).anyTimes();
     apiContainer.updateServerEndpointURL(APIContainer.CENTRAL_TENANT_NAME,"https://acme.corp/zzz/api/");
     expectLastCall().once();
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).andReturn(returnConfig).once();
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).andReturn(returnConfig).once();
     replay(proxyV2API, apiContainer);
     ProxyCheckInScheduler scheduler = new ProxyCheckInScheduler(proxyId, proxyConfig, apiContainer,
         (tenantName, config) -> assertEquals(1234567L, config.getPointsPerBatch().longValue()),
@@ -310,7 +310,7 @@ public class ProxyCheckInSchedulerTest {
     replay(proxyConfig);
     UUID proxyId = ProxyUtil.getOrCreateProxyId(proxyConfig);
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andThrow(new ClientErrorException(Response.status(404).build())).times(2);
     expect(apiContainer.getProxyV2APIForTenant(APIContainer.CENTRAL_TENANT_NAME)).andReturn(proxyV2API).anyTimes();
     apiContainer.updateServerEndpointURL(APIContainer.CENTRAL_TENANT_NAME, "https://acme.corp/zzz/api/");
@@ -346,7 +346,7 @@ public class ProxyCheckInSchedulerTest {
     UUID proxyId = ProxyUtil.getOrCreateProxyId(proxyConfig);
     expect(apiContainer.getProxyV2APIForTenant(APIContainer.CENTRAL_TENANT_NAME)).andReturn(proxyV2API).anyTimes();
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andThrow(new ClientErrorException(Response.status(404).build())).once();
     replay(proxyV2API, apiContainer);
     try {
@@ -379,7 +379,7 @@ public class ProxyCheckInSchedulerTest {
     UUID proxyId = ProxyUtil.getOrCreateProxyId(proxyConfig);
     expect(apiContainer.getProxyV2APIForTenant(APIContainer.CENTRAL_TENANT_NAME)).andReturn(proxyV2API).anyTimes();
     expect(proxyV2API.proxyCheckin(eq(proxyId), eq(authHeader), eq("proxyHost"),
-        eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
+        eq("proxyName"), eq(getBuildVersion()), anyLong(), anyObject(), eq(true))).
         andThrow(new ClientErrorException(Response.status(401).build())).once();
     replay(proxyV2API, apiContainer);
     try {

@@ -27,6 +27,8 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.wavefront.common.Utils.getLocalHostName;
+
 /**
  * Miscellaneous support methods for running Wavefront proxy.
  *
@@ -51,6 +53,14 @@ abstract class ProxyUtil {
       return proxyId;
     } else {
       return getOrCreateProxyIdFromFile(proxyConfig.getIdFile());
+    }
+  }
+
+  static String getOrCreateProxyName(@Nullable String proxyName) {
+    if (proxyName == null || proxyName.isEmpty()) {
+     return getLocalHostName();
+    } else {
+     return proxyName;
     }
   }
 

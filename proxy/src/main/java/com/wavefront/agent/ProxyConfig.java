@@ -540,8 +540,17 @@ public class ProxyConfig extends Configuration {
   @Parameter(names = {"--logsIngestionConfigFile"}, description = "Location of logs ingestions config yaml file.")
   String logsIngestionConfigFile = "/etc/wavefront/wavefront-proxy/logsingestion.yaml";
 
+  /**
+   * Default hostname to FQDN of machine. Sent as internal metric tag with checkin.
+   */
   @Parameter(names = {"--hostname"}, description = "Hostname for the proxy. Defaults to FQDN of machine.")
   String hostname = getLocalHostName();
+
+  /**
+   * MONIT-27856 new configuration property to hold the proxy name, hostname by default,
+   */
+  @Parameter(names = {"--proxyname"}, description = "Name for the proxy. Defaults to hostname.")
+  String proxyname = hostname;
 
   @Parameter(names = {"--idFile"}, description = "File to read proxy id from. Defaults to ~/.dshell/id." +
       "This property is ignored if ephemeral=true.")
@@ -1335,6 +1344,10 @@ public class ProxyConfig extends Configuration {
     return hostname;
   }
 
+  public String getProxyname() {
+    return proxyname;
+  }
+
   public String getIdFile() {
     return idFile;
   }
@@ -1724,6 +1737,7 @@ public class ProxyConfig extends Configuration {
       token = ObjectUtils.firstNonNull(config.getRawProperty("token", token), "undefined").trim();
       server = config.getString("server", server);
       hostname = config.getString("hostname", hostname);
+      proxyname = config.getString("proxyname", proxyname);
       idFile = config.getString("idFile", idFile);
       pushRateLimit = config.getInteger("pushRateLimit", pushRateLimit);
       pushRateLimitHistograms = config.getInteger("pushRateLimitHistograms",

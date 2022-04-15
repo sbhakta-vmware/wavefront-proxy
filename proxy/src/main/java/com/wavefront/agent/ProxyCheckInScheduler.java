@@ -33,6 +33,7 @@ import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.ProcessingException;
 
 import static com.wavefront.common.Utils.getBuildVersion;
+import static com.wavefront.common.Utils.getLocalHostName;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 
 /**
@@ -60,6 +61,7 @@ public class ProxyCheckInScheduler {
   private final Runnable truncateBacklog;
 
   private String serverEndpointUrl = null;
+  private final String hostname = getLocalHostName();
   private volatile JsonNode agentMetrics;
   private final AtomicInteger retries = new AtomicInteger(0);
   private final AtomicLong successfulCheckIns = new AtomicLong(0);
@@ -164,7 +166,7 @@ public class ProxyCheckInScheduler {
         multicastingConfig = apiContainer.getProxyV2APIForTenant(tenantName).proxyCheckin(proxyId,
             "Bearer " + multicastingTenantProxyConfig.get(APIContainer.API_TOKEN),
             proxyConfig.getHostname() + (multicastingTenantList.size() > 1 ? "-multi_tenant" : ""),
-            getBuildVersion(), System.currentTimeMillis(), agentMetricsWorkingCopy, proxyConfig.isEphemeral());
+            proxyConfig.getProxyname(), getBuildVersion(), System.currentTimeMillis(), agentMetricsWorkingCopy, proxyConfig.isEphemeral());
         configurationList.put(tenantName, multicastingConfig);
       }
       agentMetricsWorkingCopy = null;
@@ -307,6 +309,8 @@ public class ProxyCheckInScheduler {
     try {
       Map<String, String> pointTags = new HashMap<>(proxyConfig.getAgentMetricsPointTags());
       pointTags.put("processId", ID);
+      // MONIT-27856 Adds real hostname (fqdn if possible) as internal metric tag
+      pointTags.put("hostname", hostname);
       synchronized (executor) {
         agentMetrics = JsonMetricsGenerator.generateJsonMetrics(Metrics.defaultRegistry(),
             true, true, true, pointTags, null);

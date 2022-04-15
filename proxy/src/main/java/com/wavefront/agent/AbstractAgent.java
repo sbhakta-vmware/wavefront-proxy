@@ -24,7 +24,6 @@ import com.wavefront.agent.queueing.QueueExporter;
 import com.wavefront.agent.queueing.SQSQueueFactoryImpl;
 import com.wavefront.agent.queueing.TaskQueueFactory;
 import com.wavefront.agent.queueing.TaskQueueFactoryImpl;
-import com.wavefront.api.ProxyV2API;
 import com.wavefront.api.agent.AgentConfiguration;
 import com.wavefront.api.agent.ValidationConfiguration;
 import com.wavefront.common.TaggedMetricName;
@@ -196,6 +195,10 @@ public abstract class AbstractAgent {
 
     if (StringUtils.isBlank(proxyConfig.getHostname().trim())) {
       throw new IllegalArgumentException("hostname cannot be blank! Please correct your configuration settings.");
+    }
+
+    if (StringUtils.isBlank(proxyConfig.getProxyname().trim())) {
+      throw new IllegalArgumentException("proxyname cannot be blank! Please correct your configuration settings.");
     }
 
     if (proxyConfig.isSqsQueueBuffer()) {
