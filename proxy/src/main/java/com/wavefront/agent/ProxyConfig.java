@@ -19,6 +19,7 @@ import com.wavefront.agent.config.ReportableConfig;
 import com.wavefront.agent.data.TaskQueueLevel;
 import com.wavefront.common.TimeProvider;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.ArrayList;
@@ -550,7 +551,7 @@ public class ProxyConfig extends Configuration {
    * MONIT-27856 new configuration property to hold the proxy name, hostname by default,
    */
   @Parameter(names = {"--proxyname"}, description = "Name for the proxy. Defaults to hostname.")
-  String proxyname = hostname;
+  String proxyname = getLocalHostName();
 
   @Parameter(names = {"--idFile"}, description = "File to read proxy id from. Defaults to ~/.dshell/id." +
       "This property is ignored if ephemeral=true.")
@@ -1741,7 +1742,9 @@ public class ProxyConfig extends Configuration {
         logger.warning("Deprecated field hostname specified in config setting. Please use " +
             "proxyname config field to set proxy name.");
       }
-      proxyname = config.getString("proxyname", proxyname);
+      if (StringUtils.isNotBlank(config.getString("proxyname", proxyname))) {
+        proxyname = config.getString("proxyname", proxyname);
+      }
       idFile = config.getString("idFile", idFile);
       pushRateLimit = config.getInteger("pushRateLimit", pushRateLimit);
       pushRateLimitHistograms = config.getInteger("pushRateLimitHistograms",
