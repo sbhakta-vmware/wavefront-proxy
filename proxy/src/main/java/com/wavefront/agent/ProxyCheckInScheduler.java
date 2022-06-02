@@ -33,7 +33,6 @@ import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.ProcessingException;
 
 import static com.wavefront.common.Utils.getBuildVersion;
-import static com.wavefront.common.Utils.getLocalHostName;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 
 /**
@@ -59,9 +58,9 @@ public class ProxyCheckInScheduler {
   private final BiConsumer<String, AgentConfiguration> agentConfigurationConsumer;
   private final Runnable shutdownHook;
   private final Runnable truncateBacklog;
-
+  private String hostname;
   private String serverEndpointUrl = null;
-  private final String hostname = getLocalHostName();
+
   private volatile JsonNode agentMetrics;
   private final AtomicInteger retries = new AtomicInteger(0);
   private final AtomicLong successfulCheckIns = new AtomicLong(0);
@@ -109,6 +108,7 @@ public class ProxyCheckInScheduler {
         successfulCheckIns.incrementAndGet();
       }
     }
+    hostname = proxyConfig.getHostname();
   }
 
   /**

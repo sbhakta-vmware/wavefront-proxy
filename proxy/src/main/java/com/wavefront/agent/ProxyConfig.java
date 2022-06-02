@@ -546,7 +546,7 @@ public class ProxyConfig extends Configuration {
    * Default hostname to FQDN of machine. Sent as internal metric tag with checkin.
    */
   @Parameter(names = {"--hostname"}, description = "Hostname for the proxy. Defaults to FQDN of machine.")
-  String hostname = null;
+  String hostname = getLocalHostName();
 
   /**
    * This property holds the proxy name. Default proxyname to FQDN of machine.
@@ -1739,12 +1739,6 @@ public class ProxyConfig extends Configuration {
       token = ObjectUtils.firstNonNull(config.getRawProperty("token", token), "undefined").trim();
       server = config.getString("server", server);
       hostname = config.getString("hostname", hostname);
-      if (hostname != null) {
-        logger.warning("Deprecated field hostname specified in config setting. Please use " +
-            "proxyname config field to set proxy name.");
-      } else {
-        hostname = getLocalHostName();
-      }
       if (StringUtils.isNotBlank(config.getString("proxyname", proxyname))) {
         proxyname = config.getString("proxyname", proxyname);
       }

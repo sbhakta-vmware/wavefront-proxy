@@ -26,9 +26,6 @@ import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static com.wavefront.common.Utils.getLocalHostName;
-
 /**
  * Miscellaneous support methods for running Wavefront proxy.
  *
